@@ -1,5 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { BaseEntity } from '../../../infrastructure/database/entities/base.entity';
+import { Branch } from '../../branches/entities/branch.entities';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import { User } from '../../users/entities/user.entities';
 
 @Entity('tenants')
 export class Tenant extends BaseEntity {
@@ -29,4 +31,10 @@ export class Tenant extends BaseEntity {
 
   @Column({ type: 'decimal', precision: 5, scale: 2, default: 0 })
   taxRate: number;
+
+  @OneToMany(() => User, (user) => user.tenant)
+  users: User[];
+
+  @OneToMany(() => Branch, (branch) => branch.tenant)
+  branches: Branch[];
 }

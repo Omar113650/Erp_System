@@ -1,14 +1,18 @@
 import { SelectQueryBuilder, ObjectLiteral } from 'typeorm';
 
 export class ApiFeatures<T extends ObjectLiteral> {
+  private alias: string;
+
   constructor(
     private query: SelectQueryBuilder<T>,
     private queryString: any,
-  ) {}
+  ) {
+    this.alias = this.query.alias; // 👈 أهم تعديل
+  }
 
   filter() {
     const queryObj = { ...this.queryString };
-    const excludedFields = ['page', 'sort', 'limit', 'fields'];
+    const excludedFields = ['page', 'sort', 'limit', 'fields', 'order'];
     excludedFields.forEach((el) => delete queryObj[el]);
 
     Object.keys(queryObj).forEach((key) => {
@@ -20,31 +24,39 @@ export class ApiFeatures<T extends ObjectLiteral> {
 
           switch (operator) {
             case 'gte':
-              this.query.andWhere(`${key} >= :${paramKey}`, {
-                [paramKey]: value[operator],
-              });
+              this.query.andWhere(
+                `${this.alias}.${key} >= :${paramKey}`,
+                { [paramKey]: value[operator] },
+              );
               break;
+
             case 'gt':
-              this.query.andWhere(`${key} > :${paramKey}`, {
-                [paramKey]: value[operator],
-              });
+              this.query.andWhere(
+                `${this.alias}.${key} > :${paramKey}`,
+                { [paramKey]: value[operator] },
+              );
               break;
+
             case 'lte':
-              this.query.andWhere(`${key} <= :${paramKey}`, {
-                [paramKey]: value[operator],
-              });
+              this.query.andWhere(
+                `${this.alias}.${key} <= :${paramKey}`,
+                { [paramKey]: value[operator] },
+              );
               break;
+
             case 'lt':
-              this.query.andWhere(`${key} < :${paramKey}`, {
-                [paramKey]: value[operator],
-              });
+              this.query.andWhere(
+                `${this.alias}.${key} < :${paramKey}`,
+                { [paramKey]: value[operator] },
+              );
               break;
           }
         });
       } else {
-        this.query.andWhere(`${key} LIKE :${key}`, {
-          [key]: `%${value}%`,
-        });
+        this.query.andWhere(
+          `${this.alias}.${key} ILIKE :${key}`, // 👈 استخدمت ILIKE علشان PostgreSQL
+          { [key]: `%${value}%` },
+        );
       }
     });
 
@@ -53,10 +65,16 @@ export class ApiFeatures<T extends ObjectLiteral> {
 
   sort() {
     if (this.queryString.sort) {
-      const order = this.queryString.order?.toUpperCase() || 'ASC';
-      this.query.orderBy(this.queryString.sort, order);
+      const order =
+        this.queryString.order?.toUpperCase() === 'DESC' ? 'DESC' : 'ASC';
+
+      this.query.orderBy(
+        `${this.alias}.${this.queryString.sort}`,
+        order,
+      );
     } else {
-      this.query.orderBy('createdAt', 'DESC');
+      // 👈 ده اللي كان مسبب المشكلة
+      this.query.orderBy(`${this.alias}.createdAt`, 'DESC');
     }
 
     return this;
@@ -64,7 +82,10 @@ export class ApiFeatures<T extends ObjectLiteral> {
 
   paginate() {
     const page = Math.max(Number(this.queryString.page) || 1, 1);
-    const limit = Math.min(Math.max(Number(this.queryString.limit) || 10, 1), 100);
+    const limit = Math.min(
+      Math.max(Number(this.queryString.limit) || 10, 1),
+      100,
+    );
     const skip = (page - 1) * limit;
 
     this.query.skip(skip).take(limit);
@@ -76,7 +97,10 @@ export class ApiFeatures<T extends ObjectLiteral> {
     const [data, total] = await this.query.getManyAndCount();
 
     const page = Math.max(Number(this.queryString.page) || 1, 1);
-    const limit = Math.min(Math.max(Number(this.queryString.limit) || 10, 1), 100);
+    const limit = Math.min(
+      Math.max(Number(this.queryString.limit) || 10, 1),
+      100,
+    );
 
     return {
       currentPage: page,

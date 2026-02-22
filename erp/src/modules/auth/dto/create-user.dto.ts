@@ -59,9 +59,9 @@ export class CreateUserDto {
   //   example: 'uuid-of-tenant',
   // })
 
-//   @IsOptional()
-//   @IsUUID()
-//   tenantId: string;
+  // @IsOptional()
+  // @IsUUID()
+  // tenantId: string;
 
 //   @ApiPropertyOptional({
 //     description: 'Branch ID',

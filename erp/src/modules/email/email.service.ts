@@ -1,5 +1,4 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import * as nodemailer from 'nodemailer';
 
 interface SendEmailProps {
@@ -16,26 +15,25 @@ export class EmailService {
   private transporter;
   private readonly logger = new Logger(EmailService.name);
 
-  constructor(private config: ConfigService) {
+  constructor() {
+    // 👈 هنا نستخدم process.env مباشرة
     this.transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: "omarabdalallh21@gmail.com",
-        pass: "ctrkfmrcegogsgxs",
+        user: process.env.APP_EMAIL_ADDRESS, // من ملف .env
+        pass: process.env.APP_EMAIL_PASSWORD, // من ملف .env
       },
-
       tls: { rejectUnauthorized: false },
     });
   }
 
-  // ============================
   // ==================================
   // 🔹 فانكشن عامة لإرسال أي إيميل
-  // ===================================
+  // ==================================
   async sendEmail({ to, subject, html }: SendEmailProps) {
     try {
       await this.transporter.sendMail({
-        from: `"ERP App" <${this.config.get('APP_EMAIL_ADDRESS')}>`,
+        from: `"ERP App" <${process.env.APP_EMAIL_ADDRES}>`, // استخدم process.env
         to: to.trim().toLowerCase(),
         subject: subject || 'ERP App Notification',
         html: html || '<p>You have a new notification.</p>',
@@ -81,7 +79,7 @@ export class EmailService {
       to,
       subject: subject || 'Your otp Verification Code',
       html: htmlContent,
-      otp
+      otp,
     });
   }
 

@@ -1,4 +1,5 @@
 import { registerAs } from '@nestjs/config';
+
 export default registerAs('database', () => ({
   type: 'postgres',
   host: process.env.DB_HOST || 'localhost',
@@ -6,6 +7,6 @@ export default registerAs('database', () => ({
   username: process.env.DB_USERNAME || 'ERP',
   password: process.env.DB_PASSWORD || 'Omar2023',
   database: process.env.DB_NAME || 'ERP',
-  synchronize: 'true',
+  synchronize: true, // 👈 خليها Boolean
   autoLoadEntities: true,
 }));

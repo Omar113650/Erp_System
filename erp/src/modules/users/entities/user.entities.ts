@@ -4,17 +4,14 @@ import {
   Column,
   ManyToOne,
   JoinColumn,
-
 } from 'typeorm';
 import { Tenant } from '../../tenant/entities/tenant.entities';
-import { Branch } from '../../branches/entities/branch.entities';
-import { BaseTenantEntity } from '../../../infrastructure/database/entities/tenant-base.entity';
 import { UserRole } from '../../../core/enums/user-role.enum';
 import { Exclude } from 'class-transformer';
+import { BaseEntity } from '../../../infrastructure/database/entities/base.entity';
 
 @Entity('users')
-// export class User extends BaseTenantEntity 
-export class User {
+export class User extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -46,11 +43,8 @@ export class User {
   @Column({ type: 'varchar', length: 255, nullable: true })
   reset_password_token: string | null;
 
-  // @ManyToOne(() => Tenant)
-  // @JoinColumn({ name: 'tenant_id' })
-  // tenant: Tenant;
-
-  // @ManyToOne(() => Branch)
-  // @JoinColumn({ name: 'branch_id' })
-  // branch: Branch;
+  // ✅ كل مستخدم لازم يكون مرتبط بمؤسسة
+  @ManyToOne(() => Tenant, (tenant) => tenant.users, { nullable: true })
+  @JoinColumn({ name: 'tenant_id' })
+  tenant: Tenant;
 }

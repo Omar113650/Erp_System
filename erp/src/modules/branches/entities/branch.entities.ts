@@ -5,12 +5,11 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-
-import { BaseTenantEntity } from '../../../infrastructure/database/entities/tenant-base.entity';
+import { BaseEntity } from '../../../infrastructure/database/entities/base.entity';
 import { Tenant } from '../../tenant/entities/tenant.entities';
 
 @Entity('branches')
-export class Branch extends BaseTenantEntity {
+export class Branch extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -29,8 +28,10 @@ export class Branch extends BaseTenantEntity {
   @Column({ type: 'boolean', default: true })
   isActive: boolean;
 
-  // relations
-  @ManyToOne(() => Tenant, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Tenant, (tenant) => tenant.branches, { nullable: false })
   @JoinColumn({ name: 'tenant_id' })
   tenant: Tenant;
+
+  @Column({ type: 'uuid' })
+  tenant_id: string;
 }

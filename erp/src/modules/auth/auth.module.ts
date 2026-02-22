@@ -5,13 +5,13 @@ import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { User } from '../users/entities/user.entities';
-import{EmailModule} from '../email/email.module'
+import { EmailModule } from '../email/email.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
     JwtModule.registerAsync({
-      imports: [ConfigModule,EmailModule],
+      imports: [ConfigModule, EmailModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
         const secret =
@@ -20,18 +20,14 @@ import{EmailModule} from '../email/email.module'
 
         return {
           secret,
-          signOptions: {
-            expiresIn: parseInt(expiresIn, 10),
-          },
+          signOptions: { expiresIn: parseInt(expiresIn, 10) },
         };
       },
-      
-      
     }),
-    EmailModule
-    
+    EmailModule,
   ],
   controllers: [AuthController],
   providers: [AuthService],
+  exports: [AuthService, JwtModule], // ✅ هنا نصدر AuthService و JwtModule
 })
 export class AuthModule {}

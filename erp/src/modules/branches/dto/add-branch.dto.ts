@@ -6,7 +6,7 @@ import {
   IsEmail,
   Length,
   IsBoolean,
-  IsNumber,
+  IsUUID,
 } from '@nestjs/class-validator';
 
 export class CreateBranchDto {
@@ -37,8 +37,8 @@ export class CreateBranchDto {
   @IsBoolean()
   isActive?: boolean;
 
-  @ApiProperty({ example: 1 })
+  @ApiProperty({ example: '1fmefpefkpqwdwqdqwd' })
   @IsNotEmpty()
-  @IsNumber()
-  tenantId: number;
+  @IsUUID()
+  tenant_id: string;
 }

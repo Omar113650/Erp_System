@@ -9,8 +9,9 @@ import { AuthModule } from './modules/auth/auth.module';
 import { TenantModule } from './modules/tenant/tenant.module';
 import { CloudinaryModule } from './infrastructure/cloudinary/cloudinary.module';
 import { BranchModule } from './modules/branches/branch.module';
-import { CustomerModule } from './modules/customers/customer.module';
+// import { CustomerModule } from './modules/customers/customer.module';
 import { EmailModule } from './modules/email/email.module';
+
 // import{ChatGateway} from './chat.gateway'
 @Module({
   imports: [
@@ -35,8 +36,9 @@ import { EmailModule } from './modules/email/email.module';
     TenantModule,
     CloudinaryModule,
     BranchModule,
-    CustomerModule,
+    // CustomerModule,
     EmailModule,
+    
   ],
   controllers: [AppController],
   providers: [AppService],

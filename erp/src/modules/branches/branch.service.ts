@@ -12,12 +12,22 @@ export class BranchService {
     @InjectRepository(Branch)
     private readonly branchRepository: Repository<Branch>,
   ) {}
-
   async CreateBranch(createBranchDto: CreateBranchDto) {
+    const { tenant_id } = createBranchDto;
+
+    const tenant = await this.branchRepository.manager.findOne('Tenant', {
+      where: { id: tenant_id },
+    });
+
+    if (!tenant) {
+      throw new NotFoundException('Tenant not found');
+    }
+
     const branch = this.branchRepository.create({
       ...createBranchDto,
-      tenantId: String(createBranchDto.tenantId),
+      tenant,
     });
+
     return await this.branchRepository.save(branch);
   }
 
@@ -38,10 +48,19 @@ export class BranchService {
   }
 
   async UpdateBranch(id: string, updateDto: UpdateBranchDto) {
+    const { tenant_id } = updateDto;
+
+    const tenant = await this.branchRepository.manager.findOne('Tenant', {
+      where: { id: tenant_id },
+    });
+
+    if (!tenant) {
+      throw new NotFoundException('Tenant not found');
+    }
     const branch = await this.branchRepository.preload({
       id,
       ...updateDto,
-      tenantId: updateDto.tenantId ? String(updateDto.tenantId) : undefined,
+      tenant,
     });
 
     if (!branch) throw new NotFoundException('Branch not found');
