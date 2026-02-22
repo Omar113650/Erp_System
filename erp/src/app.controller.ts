@@ -3,7 +3,7 @@ import { Controller, Get } from '@nestjs/common';
 
 @Controller()
 export class AppController {
-  @Get()
+  @Get('/')
   root() {
     return { message: 'Nest.js API is running!' };
   }
