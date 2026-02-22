@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "erp/dist/main.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "erp/dist/main.js",
+      "methods": ["GET","POST","PATCH","PUT","DELETE"]
+    }
+  ]
+}
