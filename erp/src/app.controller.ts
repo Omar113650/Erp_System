@@ -1,12 +1,10 @@
+// src/app.controller.ts
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
-
   @Get()
-   getHello() {
-    return { message: 'Hello from Nest.js!' };
+  root() {
+    return { message: 'Nest.js API is running!' };
   }
 }

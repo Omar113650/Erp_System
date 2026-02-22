@@ -15,7 +15,8 @@ async function bootstrap() {
     defaultVersion: '1', // النسخة الافتراضية لو مش محددة
   });
 
-  await app.listen(3000);
+const port = process.env.PORT || 8000;
+await app.listen(port);
 }
 bootstrap();
 
