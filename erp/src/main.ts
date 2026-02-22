@@ -1,12 +1,46 @@
+// import { NestFactory } from '@nestjs/core';
+// import { AppModule } from './app.module';
+// import cookieParser from 'cookie-parser';
+// import { VersioningType } from '@nestjs/common';
+// import * as dotenv from 'dotenv';
+// dotenv.config();
+// async function bootstrap() {
+//   const app = await NestFactory.create(AppModule);
+//   app.setGlobalPrefix('api')
+
+//   app.use(cookieParser());
+
+//   app.enableVersioning({
+//     type: VersioningType.URI, // النوع
+//     defaultVersion: '1', // النسخة الافتراضية لو مش محددة
+//   });
+
+// const port = process.env.PORT || 8000;
+// await app.listen(port);
+// }
+// bootstrap();
+
+
+
+
+
+
+
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import cookieParser from 'cookie-parser';
 import { VersioningType } from '@nestjs/common';
 import * as dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
 dotenv.config();
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix('api')
+
+  
+
+  // Global Prefix
+  app.setGlobalPrefix('api');
+
+
 
   app.use(cookieParser());
 
@@ -15,11 +49,12 @@ async function bootstrap() {
     defaultVersion: '1', // النسخة الافتراضية لو مش محددة
   });
 
-const port = process.env.PORT || 8000;
-await app.listen(port);
+  // PORT ديناميكي مع Vercel
+  const port = process.env.PORT || 8000;
+  await app.listen(port);
+  console.log(`Server running on http://localhost:${port}`);
 }
 bootstrap();
-
 
 
 

@@ -11,5 +11,10 @@
   "devDependencies": {
     "@types/multer": "^2.0.0",
     "@types/sequelize": "^4.28.20"
-  }
+  },
+
+  "scripts": {
+  "vercel-build": "nest build",
+  "start:prod": "node dist/main"
+}
 }

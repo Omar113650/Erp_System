@@ -21,7 +21,7 @@ import { EmailModule } from './modules/email/email.module';
     // }),
    ConfigModule.forRoot({
   isGlobal: true,
-  envFilePath: '.env',
+  envFilePath: process.env.NODE_ENV !== 'PRODUCTION' ? '.env' : '.env.production',
   load: [databaseConfig, jwtConfig],
 }),
     TypeOrmModule.forRootAsync({
