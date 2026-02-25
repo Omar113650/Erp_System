@@ -1,8 +1,0 @@
-{
-  "dependencies": {
-    "streamifier": "^0.1.1"
-  },
-  "devDependencies": {
-    "@types/streamifier": "^0.1.2"
-  }
-}
