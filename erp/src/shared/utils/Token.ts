@@ -5,7 +5,7 @@ export const generateTokens = async (
   jwtService: JwtService,
   user: User,
 ) => {
-  const payload = { sub: user.id, role: user.role };
+  const payload = { sub: user.id, role: user.role , tenantId: user.tenant};
 
   const [accessToken, refreshToken] = await Promise.all([
     jwtService.signAsync(payload, {

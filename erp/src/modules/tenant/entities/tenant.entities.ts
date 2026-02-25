@@ -2,7 +2,8 @@ import { BaseEntity } from '../../../infrastructure/database/entities/base.entit
 import { Branch } from '../../branches/entities/branch.entities';
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { User } from '../../users/entities/user.entities';
-
+import { Category } from '../../inventory/category/entities/category.entities';
+import { Item } from '../../inventory/item/entities/item.entities';
 @Entity('tenants')
 export class Tenant extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
@@ -37,4 +38,10 @@ export class Tenant extends BaseEntity {
 
   @OneToMany(() => Branch, (branch) => branch.tenant)
   branches: Branch[];
+
+  @OneToMany(() => Category, (category) => category.tenant)
+  categories: Category[];
+
+  @OneToMany(() => Item, (item) => item.category)
+  items: Item[];
 }

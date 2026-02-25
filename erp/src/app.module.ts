@@ -11,7 +11,9 @@ import { CloudinaryModule } from './infrastructure/cloudinary/cloudinary.module'
 import { BranchModule } from './modules/branches/branch.module';
 // import { CustomerModule } from './modules/customers/customer.module';
 import { EmailModule } from './modules/email/email.module';
-
+import { CategoryModule } from './modules/inventory/category/category.module';
+import { MaterialModule } from './modules/inventory/materials/materials.module';
+import { ItemModule } from './modules/inventory/item/item.module';
 // import{ChatGateway} from './chat.gateway'
 @Module({
   imports: [
@@ -19,11 +21,12 @@ import { EmailModule } from './modules/email/email.module';
     //   isGlobal: true,
     //   load: [databaseConfig, jwtConfig],
     // }),
-   ConfigModule.forRoot({
-  isGlobal: true,
-  envFilePath: process.env.NODE_ENV !== 'PRODUCTION' ? '.env' : '.env.production',
-  load: [databaseConfig, jwtConfig],
-}),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath:
+        process.env.NODE_ENV !== 'PRODUCTION' ? '.env' : '.env.production',
+      load: [databaseConfig, jwtConfig],
+    }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
@@ -38,7 +41,9 @@ import { EmailModule } from './modules/email/email.module';
     BranchModule,
     // CustomerModule,
     EmailModule,
-    
+    CategoryModule,
+    MaterialModule,
+    ItemModule,
   ],
   controllers: [AppController],
   providers: [AppService],

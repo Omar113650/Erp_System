@@ -66,7 +66,7 @@ export class TenantServices {
       message: 'Tenant deleted successfully',
     };
   }
-  
+
   async UpdateTenant(
     id: string,
     updateTenantDto: UpdateTenantDto,
@@ -93,18 +93,3 @@ export class TenantServices {
     return await this.tenantRepository.save(tenant);
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
