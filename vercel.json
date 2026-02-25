@@ -1,15 +1,9 @@
 {
-  "version": 2,
+  "version": 3,
   "builds": [
-    {
-      "src": "erp/src/main.ts",
-      "use": "@vercel/node"
-    }
+    { "src": "erp/**/*.ts", "use": "@vercel/node" }
   ],
   "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "erp/src/main.ts"
-    }
+    { "src": "/(.*)", "dest": "erp/main.ts" }
   ]
 }
